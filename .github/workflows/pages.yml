@@ -25,10 +25,26 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Build static site
+        shell: bash
+        run: |
+          rm -rf site
+          mkdir -p site
+          cp -R . site/ --exclude=site --exclude=.git --exclude=.github --exclude=node_modules
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('site/index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = 'href="admin.html"'
+          if marker not in s:
+              link = '<a class="btn secondary small" href="admin.html" style="margin:14px 20px;display:inline-flex">Admin Console</a>'
+              s = s.replace('</main>', '<div class="container">'+link+'</div></main>', 1)
+              p.write_text(s, encoding='utf-8')
+          PY
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
