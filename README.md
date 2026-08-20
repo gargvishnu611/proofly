@@ -14,6 +14,7 @@ Proofly is a security-first web prototype for recording online deals, checking r
 - `admin.html` — protected staff/admin console
 - `supabase.sql` — database schema and RLS
 - `admin.sql` — admin/security schema and RLS
+- `tests/proofly.spec.js` — browser regression tests
 
 ## Important
 
